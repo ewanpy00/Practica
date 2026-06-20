@@ -1,0 +1,23 @@
+Assignment name  : array_merger
+Expected files   : array_merger.py
+--------------------------------------------------------------------------------
+
+Write a function merge_sorted(arrays) that takes a list of lists of integers.
+
+You must merge every inner list into a single flat list that contains all of
+their values, and return that list sorted in ascending order.
+
+The outer list may be empty, and any inner list may be empty as well. In those
+cases you simply return an empty list. Duplicate values are kept.
+
+Prototype:
+
+    def merge_sorted(arrays):
+
+Examples:
+
+    merge_sorted([[3, 1], [2], [5, 4]])  ->  [1, 2, 3, 4, 5]
+    merge_sorted([[10, -1, 7], [0]])     ->  [-1, 0, 7, 10]
+    merge_sorted([[], [2, 1], []])       ->  [1, 2]
+    merge_sorted([])                     ->  []
+    merge_sorted([[2, 2], [1, 2]])       ->  [1, 2, 2, 2]

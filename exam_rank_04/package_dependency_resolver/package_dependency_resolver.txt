@@ -1,0 +1,34 @@
+Assignment name  : package_dependency_resolver
+Expected files   : package_dependency_resolver.py
+--------------------------------------------------------------------------------
+
+Write a function topological_order(graph) that computes a valid installation
+order for a set of packages.
+
+graph is a dictionary where each key is a package name and the matching value is
+the list of packages it DEPENDS ON. A package may only be installed once every
+one of its dependencies has already been installed.
+
+Return a list of all the package names in a valid installation order. If no such
+order exists because the dependencies contain a cycle, return an empty string "".
+
+When several packages are ready to be installed at the same step, any valid
+order between them is accepted.
+
+Prototype:
+
+    def topological_order(graph):
+
+Example:
+
+    graph = {
+        "A": ["B"],
+        "D": [],
+        "B": ["C", "D"],
+        "C": []
+    }
+    topological_order(graph)  ->  ["D", "C", "B", "A"]
+
+A graph with a cycle has no valid order:
+
+    topological_order({"A": ["B"], "B": ["A"]})  ->  ""

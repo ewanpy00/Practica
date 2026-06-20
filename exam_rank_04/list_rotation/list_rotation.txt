@@ -1,0 +1,24 @@
+Assignment name  : list_rotation
+Expected files   : list_rotation.py
+--------------------------------------------------------------------------------
+
+Write a function list_rotation(l1, l2) that returns True if l1 is a rotation of
+l2, and False otherwise.
+
+A rotation means you take some elements from the front of the list and move them,
+in the same order, to the back. For example [3, 4, 5, 1, 2] is a rotation of
+[1, 2, 3, 4, 5].
+
+Two lists of different lengths can never be rotations of each other. A list is
+always a rotation of itself (a rotation of zero elements).
+
+Prototype:
+
+    def list_rotation(l1, l2):
+
+Examples:
+
+    list_rotation([3, 4, 5, 1, 2], [1, 2, 3, 4, 5])  ->  True
+    list_rotation([1, 2, 3], [1, 2, 3])              ->  True
+    list_rotation([2, 1, 3], [1, 2, 3])              ->  False
+    list_rotation([1, 2], [1, 2, 3])                 ->  False

@@ -1,0 +1,29 @@
+Assignment name  : sliding_window
+Expected files   : sliding_window.py
+--------------------------------------------------------------------------------
+
+Write a function max_sliding_window(nums, k) that takes a list of integers nums
+and an integer k (the window size).
+
+A window of size k slides over the list from left to right, one position at a
+time. For every position of the window, you must record the MAXIMUM value
+currently inside the window.
+
+Your function must return the list of these maximums, in order, from the
+left-most window position to the right-most one. For a list of length n and a
+window of size k, the result contains exactly n - k + 1 values.
+
+You may assume the list is non-empty and 1 <= k <= len(nums).
+
+Prototype:
+
+    def max_sliding_window(nums, k):
+
+Example:
+
+    max_sliding_window([1, 2, 5, -1, 0, 3], 3)  ->  [5, 5, 5, 3]
+
+    #   [1, 2, 5]        -> 5
+    #      [2, 5, -1]    -> 5
+    #         [5, -1, 0] -> 5
+    #            [-1,0,3]-> 3

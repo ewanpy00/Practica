@@ -1,0 +1,35 @@
+Assignment name  : constellation_mapper
+Expected files   : constellation_mapper.py
+--------------------------------------------------------------------------------
+
+Write a function is_match(s, pattern) that returns True if the plain string s
+matches the pattern, and False otherwise.
+
+s is a plain string made of letters only.
+
+pattern is made of letters and the two special characters '*' and '.', each of
+which always refers to the character that immediately precedes it:
+
+    *  : copies the previous character ONCE.
+         So "a*" stands for exactly two 'a'  -> "aa".
+
+    .  : the previous character may repeat an unlimited number of times.
+         So "a." matches one or more 'a'     -> "a", "aa", "aaa", ...
+
+A plain letter in the pattern matches exactly one occurrence of that letter. The
+whole string s must be consumed by the whole pattern for the result to be True.
+
+You may assume the pattern is well-formed: '*' and '.' never appear at the start
+and always follow a normal letter.
+
+Prototype:
+
+    def is_match(s, pattern):
+
+Examples:
+
+    is_match("aab",  "a*b")  ->  True    # a*  -> "aa", then b
+    is_match("aaab", "a.b")  ->  True    # a.  -> "aaa", then b
+    is_match("ab",   "a.b")  ->  True    # a.  -> "a",   then b
+    is_match("ab",   "a*b")  ->  False   # a*  needs "aa", got "a"
+    is_match("abc",  "abc")  ->  True    # no special chars

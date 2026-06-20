@@ -1,0 +1,21 @@
+Assignment name  : list_intersection_finder
+Expected files   : list_intersection_finder.py
+--------------------------------------------------------------------------------
+
+Write a function find_intersection(l1, l2) that takes two lists of integers and
+returns a list with the values that appear in BOTH lists.
+
+Each value must appear only once in the result, even if it occurs several times
+in the inputs. The result must be sorted in ascending order.
+
+If there is no common value, return an empty list.
+
+Prototype:
+
+    def find_intersection(l1, l2):
+
+Examples:
+
+    find_intersection([1, 2, 3, 4], [2, 4, 6])  ->  [2, 4]
+    find_intersection([1, 1, 2], [1, 1, 1])     ->  [1]
+    find_intersection([1, 2], [3, 4])           ->  []

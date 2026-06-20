@@ -1,0 +1,16 @@
+Assignment name  : py_echo_validator
+Expected files   : py_echo_validator.py
+--------------------------------------------------------------------------------
+
+Write a function that checks if a string is a palindrome, ignoring spaces and
+case, only consider alphabetic characters for the comparison.
+
+Prototype:
+
+    def echo_validator(text: str) -> bool:
+
+Examples:
+
+    echo_validator("racecar")                      ->  True
+    echo_validator("A man a plan a canal Panama")  ->  True
+    echo_validator("hello")                        ->  False

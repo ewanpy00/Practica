@@ -1,0 +1,17 @@
+Assignment name  : py_string_permutation_checker
+Expected files   : py_string_permutation_checker.py
+--------------------------------------------------------------------------------
+
+Write a function that determines if two strings are permutations of each other.
+
+Case sensitive. Whitespace and punctuation count as regular characters. Empty
+strings are permutations of each other.
+
+Prototype:
+
+    def string_permutation_checker(s1: str, s2: str) -> bool:
+
+Examples:
+
+    string_permutation_checker("abc", "bca")  ->  True
+    string_permutation_checker("abc", "def")  ->  False

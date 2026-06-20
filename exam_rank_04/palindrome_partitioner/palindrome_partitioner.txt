@@ -1,0 +1,23 @@
+Assignment name  : palindrome_partitioner
+Expected files   : palindrome_partitioner.py
+--------------------------------------------------------------------------------
+
+Write a function min_palindrome_partitions(s) that returns the MINIMUM number of
+pieces the string s must be cut into so that every single piece is a palindrome.
+
+A palindrome reads the same forwards and backwards. A single character is always
+a palindrome, so a valid partition always exists (in the worst case, one piece
+per character).
+
+You may assume s is a non-empty string made of letters only.
+
+Prototype:
+
+    def min_palindrome_partitions(s):
+
+Examples:
+
+    min_palindrome_partitions("abddbba")  ->  4    # "a" | "bddb" | "b" | "a"
+    min_palindrome_partitions("aab")      ->  2    # "aa" | "b"
+    min_palindrome_partitions("racecar")  ->  1    # already a palindrome
+    min_palindrome_partitions("abc")      ->  3    # "a" | "b" | "c"
