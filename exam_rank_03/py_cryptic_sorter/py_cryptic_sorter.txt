@@ -1,0 +1,21 @@
+Assignment name  : py_cryptic_sorter
+Expected files   : py_cryptic_sorter.py
+--------------------------------------------------------------------------------
+
+Write a function that sorts a list of strings according to multiple criteria:
+
+    1. Primary sort   : by string length (shortest first).
+    2. Secondary sort : ASCII order, except letters are compared
+                        case-insensitively (for strings of same length).
+    3. Tertiary sort  : by number of vowels (ascending, for same length and
+                        lexically equal).
+    4. Equal strings will appear in the same order as in the input list.
+
+Prototype:
+
+    def cryptic_sorter(strings: list[str]) -> list[str]:
+
+Examples:
+
+    cryptic_sorter(["apple", "cat", "banana", "dog", "elephant"])
+        ->  ["cat", "dog", "apple", "banana", "elephant"]

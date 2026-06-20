@@ -1,0 +1,15 @@
+Assignment name  : py_mirror_matrix
+Expected files   : py_mirror_matrix.py
+--------------------------------------------------------------------------------
+
+Given a 2D matrix (list of lists), return a new matrix where each row is
+reversed.
+
+Prototype:
+
+    def mirror_matrix(matrix: list[list[int]]) -> list[list[int]]:
+
+Examples:
+
+    mirror_matrix([[1,2,3],[4,5,6]])  ->  [[3,2,1],[6,5,4]]
+    mirror_matrix([[1,2],[3,4],[5,6]])  ->  [[2,1],[4,3],[6,5]]

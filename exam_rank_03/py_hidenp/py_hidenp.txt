@@ -1,0 +1,18 @@
+Assignment name  : py_hidenp
+Expected files   : py_hidenp.py
+--------------------------------------------------------------------------------
+
+Write a function that checks if the string 'small' is a subsequence of 'big'.
+
+A subsequence means all characters of 'small' appear in 'big' in the same
+order, but not necessarily consecutively. Function is case-sensitive.
+
+Prototype:
+
+    def hidenp(small: str, big: str) -> bool:
+
+Examples:
+
+    hidenp("abc", "a1b2c3")  ->  True
+    hidenp("abc", "acb")     ->  False
+    hidenp("", "anything")   ->  True
