@@ -17,6 +17,20 @@ from examshell.grader import REPO_ROOT, RANKS, grade, rank_dir
 
 RENDU = os.path.join(REPO_ROOT, "rendu")
 
+BANNER = r"""
+  ____  ____    _____                          _          _ _
+ / ___||___ \  | ____|_  ____ _ _ __ ___  ___| |__   ___| | |
+ \___ \  __) | |  _| \ \/ / _` | '_ ` _ \/ __| '_ \ / _ \ | |
+  ___) |/ __/  | |___ >  < (_| | | | | | \__ \ | | |  __/ | |
+ |____/|_____| |_____/_/\_\__,_|_| |_| |_|___/_| |_|\___|_|_|
+"""
+
+RANK_LABELS = {"03": "Rank 03  -  Python", "04": "Rank 04  -  Python"}
+
+
+def _clear():
+    print("\033[2J\033[H", end="")
+
 
 # --------------------------------------------------------------------------
 # discovery / scaffolding
@@ -93,23 +107,27 @@ def cmd_grade(args):
 
 
 def cmd_start(args):
-    pool = exercises_for(args.rank)
+    return run_session(args.rank, args.exercises, args.time)
+
+
+def run_session(rank, exercises, minutes):
+    pool = exercises_for(rank)
     if not pool:
-        sys.exit("no exercises found for rank %s" % args.rank)
-    count = min(args.exercises, len(pool))
+        sys.exit("no exercises found for rank %s" % rank)
+    count = min(exercises, len(pool))
     chosen = random.sample(pool, count)
-    deadline = time.time() + args.time * 60
+    deadline = time.time() + minutes * 60
 
     print("=" * 70)
     print(" 42 examshell  -  Rank %s  -  %d exercise(s)  -  %d min"
-          % (args.rank, count, args.time))
+          % (rank, count, minutes))
     print(" commands: grademe | subject | skip | quit")
     print("=" * 70)
 
     results = {}
     for exercise in chosen:
-        path = scaffold(args.rank, exercise)
-        print_subject(args.rank, exercise)
+        path = scaffold(rank, exercise)
+        print_subject(rank, exercise)
         print("Edit your solution in:  %s" % os.path.relpath(path, REPO_ROOT))
 
         while True:
@@ -125,12 +143,12 @@ def cmd_start(args):
                 return _summary(results, chosen)
 
             if cmd == "grademe":
-                if _report(grade(args.rank, exercise, path)) == "ok":
+                if _report(grade(rank, exercise, path)) == "ok":
                     results[exercise] = "OK"
                     break
                 results[exercise] = "KO"
             elif cmd == "subject":
-                print_subject(args.rank, exercise)
+                print_subject(rank, exercise)
             elif cmd == "skip":
                 results.setdefault(exercise, "SKIPPED")
                 break
@@ -156,10 +174,53 @@ def _summary(results, chosen):
     return 0 if passed == len(chosen) else 1
 
 
+def _ask(prompt, default):
+    try:
+        answer = input(prompt).strip()
+    except (EOFError, KeyboardInterrupt):
+        return None
+    return answer or default
+
+
+def cmd_menu(args=None):
+    ranks = sorted(RANKS)
+    while True:
+        _clear()
+        print("\033[36m%s\033[0m" % BANNER)
+        print("  A local practice emulation of the 42 exam shell.\n")
+        print("  Select an exam:\n")
+        for i, rank in enumerate(ranks, 1):
+            n = len(exercises_for(rank))
+            print("    %d) %-22s (%d exercises)" % (i, RANK_LABELS[rank], n))
+        print("    q) Quit\n")
+
+        choice = _ask("  > ", "")
+        if choice is None or choice.lower() in ("q", "quit", "exit"):
+            print("\n  Bye!")
+            return 0
+        if not choice.isdigit() or not (1 <= int(choice) <= len(ranks)):
+            continue
+        rank = ranks[int(choice) - 1]
+
+        available = len(exercises_for(rank))
+        count = _ask("\n  How many exercises? [3] ", "3")
+        minutes = _ask("  Time limit in minutes? [60] ", "60")
+        if count is None or minutes is None:
+            continue
+        count = int(count) if count.isdigit() else 3
+        minutes = int(minutes) if minutes.isdigit() else 60
+
+        _clear()
+        run_session(rank, min(count, available), minutes)
+        _ask("\n  Press Enter to return to the menu... ", "")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="examshell",
                                      description="Local 42 exam shell emulator.")
-    sub = parser.add_subparsers(dest="command", required=True)
+    sub = parser.add_subparsers(dest="command")
+
+    sub.add_parser("menu", help="interactive exam-selection menu (default)")
 
     p_list = sub.add_parser("list", help="list available exercises")
     p_list.add_argument("--rank", choices=sorted(RANKS))
@@ -179,6 +240,8 @@ def main(argv=None):
     p_start.set_defaults(func=cmd_start)
 
     args = parser.parse_args(argv)
+    if not getattr(args, "func", None):     # no subcommand, or `menu`
+        return cmd_menu()
     return args.func(args)
 
 

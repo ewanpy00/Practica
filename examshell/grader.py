@@ -7,12 +7,13 @@ import subprocess
 import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+EXAM_BANK = os.path.join(REPO_ROOT, "exam_bank")
 
 RANKS = {"03": "exam_rank_03", "04": "exam_rank_04"}
 
 
 def rank_dir(rank):
-    return os.path.join(REPO_ROOT, RANKS[rank])
+    return os.path.join(EXAM_BANK, RANKS[rank])
 
 
 def grade(rank, exercise, student_file, seed=None, timeout=10):
