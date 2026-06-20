@@ -28,7 +28,6 @@ MAGENTA = "\033[95m"
 YELLOW = "\033[93m"
 REMOVE_LINE = "\033[1A\033[K"
 
-RANK_LABELS = {"03": "EXAM RANK 03", "04": "EXAM RANK 04"}
 TIME_MAX_MIN = 180
 
 
@@ -108,47 +107,26 @@ class ExamShell:
         self.waiting_time = True
 
     # ----------------------------------------------------------------- menus
-    def stud_or_swim(self):
-        choice = ""
-        while choice not in ("1", "2"):
-            clear()
-            print(WHITE + BOLD + "         42EXAM ")
-            print("     Made by " + LIME + "jcluzet" + RESET + "\n\n")
-            print(LIME + BOLD + "            1" + RESET)
-            print(WHITE + BOLD + "    |  Piscine PART  |" + RESET + BOLD + "\n     \\ ------------ /\n")
-            print(LIME + BOLD + "            2" + RESET)
-            print(WHITE + BOLD + "    |  Student PART  |" + RESET + BOLD + "\n     \\ ------------ /\n\n")
-            print(LIME + BOLD + "            3" + RESET)
-            print(WHITE + BOLD + "    |  SETTINGS PART |" + RESET + BOLD + "\n     \\ ------------ /\n\n")
-            print(WHITE + BOLD + "    Enter your choice:" + RESET + "\n            ", end="")
-            choice = (ask() or "").strip()
-            if choice == "3":
-                self.settings_menu()
-            elif choice not in ("1", "2"):
-                choice = "-1"
-        return int(choice)
-
-    def stud_menu(self):
+    def main_menu(self):
         while True:
             clear()
             print(WHITE + BOLD + "         42EXAM ")
-            print(RED + "   BACK" + RESET + WHITE + BOLD + " to menu with " + RED + "0" + RESET)
-            print(WHITE + BOLD + "\n\n    |  Piscine PART  |" + RESET + BOLD + "\n     \\ ------------ /\n")
-            print(LIME + "            •           " + RESET)
-            print(WHITE + BOLD + "    |  Student PART  |")
-            for rank in ("02", "03", "04", "05", "06"):
-                print("\n" + LIME + "            " + rank[1] + RESET + WHITE + BOLD)
-                print("       EXAM RANK " + rank)
-            print(RESET + BOLD + "     \\ ------------ /")
-            print("\n\n" + WHITE + BOLD + "    Enter your choice:" + RESET + "\n            ", end="")
-            choice = (ask() or "").strip()
-            if choice == "0":
-                return 0
+            print("     Made by " + LIME + "jcluzet" + RESET + "\n\n")
+            print(LIME + BOLD + "            3" + RESET)
+            print(WHITE + BOLD + "    | PYTHON EXAM RANK 03 |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
+            print(LIME + BOLD + "            4" + RESET)
+            print(WHITE + BOLD + "    | PYTHON EXAM RANK 04 |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
+            print(LIME + BOLD + "            s" + RESET)
+            print(WHITE + BOLD + "    |      SETTINGS       |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
+            print(WHITE + BOLD + "    Enter your choice (" + RED + "q" + WHITE + " to quit):" + RESET + "\n            ", end="")
+            choice = (ask() or "").strip().lower()
             if choice in ("3", "4"):
-                return int(choice)
-            if choice in ("2", "5", "6"):
-                print("\n  This exam is not available in this practice build yet.")
-                time.sleep(1.4)
+                return "%02d" % int(choice)
+            if choice == "s":
+                self.settings_menu()
+            elif choice in ("q", "quit", "exit", "0"):
+                print("\n  Bye!")
+                sys.exit(0)
 
     def settings_menu(self):
         choice = ""
@@ -171,17 +149,9 @@ class ExamShell:
     # ------------------------------------------------------------ onboarding
     def ask_param(self):
         while True:
-            select = self.stud_or_swim()
-            if select == 1:
-                print("\n  No Piscine exams are available in this practice build.")
-                time.sleep(1.4)
-                continue
-            rank = self.stud_menu()
-            if rank == 0:
-                continue
-            self.rank = "%02d" % rank
-            print(REMOVE_LINE * 3)
-            print(LIME + BOLD + "       EXAM RANK %s" % self.rank + RESET)
+            self.rank = self.main_menu()
+            clear()
+            print(LIME + BOLD + "       PYTHON EXAM RANK %s" % self.rank + RESET + "\n")
             print("   Confirm" + BOLD + WHITE + " Registration" + RESET + "?\n          (y/n)\n            ", end="")
             if (ask() or "").strip().lower() == "y":
                 break
