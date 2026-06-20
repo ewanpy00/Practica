@@ -1,7 +1,9 @@
 .claude/
 .DS_Store
 
-# examshell student workspace and bytecode
-rendu/
+# examshell generated workspace and bytecode
+/rendu/
+/subjects/
+/traces/
 __pycache__/
 *.pyc

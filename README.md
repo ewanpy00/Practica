@@ -23,36 +23,38 @@ Each task folder contains:
 
 ## examshell — practice like the real exam
 
-`examshell` simulates the 42 exam: it picks random exercises, shows the subject,
-gives you a stub to fill in under `rendu/`, and grades your code. Grading is
-**differential** — your function is run against the reference solution (used as
-an oracle) on the subject examples plus many random inputs.
+`examshell` reproduces the 42 ExamShell interface (menus, connexion animation,
+status board, `grademe` flow, SUCCESS / FAILURE screens). You pick an exam rank,
+get a random subject at `subjects/subject.en.txt`, write your file under
+`rendu/<exercise>/`, and run `grademe`. Each pass advances a level until the exam
+is complete.
 
-Just launch it and pick an exam from the menu:
+Grading is **differential**: your function is run against the reference solution
+(used as an oracle) on the subject examples plus many random inputs. On failure,
+the failing input/expected/got is saved to `traces/`.
+
+Just launch it:
 
 ```sh
-./examshell.sh
+./examshell.sh          # or: python3 -m examshell
 ```
 
-Other entry points:
+In-exam commands: `grademe`, `status`, `help`, `settings`, `finish`.
+
+Non-interactive helpers:
 
 ```sh
-# same interactive menu
-python3 -m examshell
-
-# list exercises
-python3 -m examshell list
-
-# start a session directly, skipping the menu
-python3 -m examshell start --rank 03 --exercises 3 --time 60
-
-# grade a single submission without a session
-python3 -m examshell grade 03 py_anagram --file path/to/your.py
+python3 -m examshell list                                  # list exercises
+python3 -m examshell grade 03 py_anagram --file your.py    # grade one file
 ```
 
-Inside a session: `grademe` (run the tests), `subject` (reprint), `skip`, `quit`.
-Your work lives in `rendu/` (git-ignored); the reference solutions stay in
-[`exam_bank/`](exam_bank/) as the grading oracle.
+Your work lives in `rendu/` and the active subject in `subjects/` (both
+git-ignored); the reference solutions stay in [`exam_bank/`](exam_bank/) as the
+grading oracle.
+
+> The shell interface is modelled on [jcluzet/42_EXAM](https://github.com/jcluzet/42_EXAM).
+> This is **not** the real 42 exam and is not affiliated with 42; grading runs
+> locally and offline.
 
 ## Exam Rank 04
 
