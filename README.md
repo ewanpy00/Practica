@@ -6,18 +6,42 @@ A collection of exam practice assignments, made as part of the
 This repository will be updated over time - as updates appear, as new assignments
 are added, or as inaccuracies in the problem wording are found and corrected.
 
-The project is split by exam rank:
+The project is split into exam *content* and the exam *simulator*:
 
 - [`exam_rank_03/`](exam_rank_03/) — Python tasks based on 42exam.net Rank 03.
 - [`exam_rank_04/`](exam_rank_04/) — Rank 04 tasks, recreated from memory.
+- [`examshell/`](examshell/) — a local grademe-style exam shell that renders
+  subjects and grades your code.
 
 Each task folder contains:
 
 ```
 <task>/
   ├── <task>.txt   problem statement (42-style subject)
-  └── <task>.py    working solution
+  └── <task>.py    reference solution
 ```
+
+## examshell — practice like the real exam
+
+`examshell` simulates the 42 exam: it picks random exercises, shows the subject,
+gives you a stub to fill in under `rendu/`, and grades your code. Grading is
+**differential** — your function is run against the reference solution (used as
+an oracle) on the subject examples plus many random inputs.
+
+```sh
+# list exercises
+python3 -m examshell list
+
+# start a timed exam session (3 exercises, 60 min) — type `grademe` to test
+python3 -m examshell start --rank 03 --exercises 3 --time 60
+
+# grade a single submission directly
+python3 -m examshell grade 03 py_anagram --file path/to/your.py
+```
+
+Inside a session: `grademe` (run the tests), `subject` (reprint), `skip`, `quit`.
+Your work lives in `rendu/` (git-ignored); the reference solutions stay in the
+`exam_rank_0X/` folders as the grading oracle.
 
 ## Exam Rank 04
 
