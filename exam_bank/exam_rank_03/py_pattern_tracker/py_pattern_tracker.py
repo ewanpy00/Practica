@@ -8,6 +8,6 @@ def pattern_tracker(text: str) -> int:
 
     return count
 
-print(pattern_tracker("123"))
-print(pattern_tracker("1357"))
-print(pattern_tracker("90"))
+# print(pattern_tracker("123"))
+# print(pattern_tracker("1357"))
+# print(pattern_tracker("90"))

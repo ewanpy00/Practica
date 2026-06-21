@@ -9,4 +9,4 @@ def cryptic_sorter(strings: list[str]) -> list[str]:
 
     return sorted(strings, key=lambda s: (len(s), case_insensitive(s), vowel_count(s)))
 
-print(cryptic_sorter(["apple", "cat", "banana", "dog", "elephant"]))
+# print(cryptic_sorter(["apple", "cat", "banana", "dog", "elephant"]))

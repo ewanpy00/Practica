@@ -7,7 +7,7 @@ def list_rotation(l1, l2):
 
     return ls1 in ls2
 
-print(list_rotation([3, 4, 5, 1, 2], [1, 2, 3, 4, 5]))
-print(list_rotation([1, 2, 3], [1, 2, 3]))
-print(list_rotation([2, 1, 3], [1, 2, 3]))
-print(list_rotation([1, 2], [1, 2, 3]))
+# print(list_rotation([3, 4, 5, 1, 2], [1, 2, 3, 4, 5]))
+# print(list_rotation([1, 2, 3], [1, 2, 3]))
+# print(list_rotation([2, 1, 3], [1, 2, 3]))
+# print(list_rotation([1, 2], [1, 2, 3]))

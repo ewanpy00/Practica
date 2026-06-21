@@ -25,6 +25,6 @@ def number_base_converter(number: str, from_base: int, to_base: int) -> str:
 
     return out
 
-print(number_base_converter("1010", 2, 10))
-print(number_base_converter("FF", 16, 2))
-print(number_base_converter("10", 2, 99))
+# print(number_base_converter("1010", 2, 10))
+# print(number_base_converter("FF", 16, 2))
+# print(number_base_converter("10", 2, 99))

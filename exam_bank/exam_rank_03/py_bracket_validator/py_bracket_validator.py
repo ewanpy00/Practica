@@ -13,8 +13,8 @@ def bracket_validator(s: str) -> bool:
 
     return not stack
 
-print(bracket_validator("()"))
-print(bracket_validator("()[]{}"))
-print(bracket_validator("(]"))
-print(bracket_validator("([)]"))
-print(bracket_validator("{[]}"))
+# print(bracket_validator("()"))
+# print(bracket_validator("()[]{}"))
+# print(bracket_validator("(]"))
+# print(bracket_validator("([)]"))
+# print(bracket_validator("{[]}"))

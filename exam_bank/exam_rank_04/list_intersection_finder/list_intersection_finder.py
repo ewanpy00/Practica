@@ -7,6 +7,6 @@ def find_intersection(l1, l2):
 
     return sorted(result)
 
-print(find_intersection([1, 2, 3, 4], [2, 4, 6]))
-print(find_intersection([1, 1, 2], [1, 1, 1]))
-print(find_intersection([1, 2], [3, 4]))
+# print(find_intersection([1, 2, 3, 4], [2, 4, 6]))
+# print(find_intersection([1, 1, 2], [1, 1, 1]))
+# print(find_intersection([1, 2], [3, 4]))

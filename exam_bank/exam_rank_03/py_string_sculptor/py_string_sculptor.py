@@ -14,5 +14,5 @@ def string_sculptor(text: str) -> str:
 
     return "".join(result)
 
-print(string_sculptor("hello"))
-print(string_sculptor("ab cd"))
+# print(string_sculptor("hello"))
+# print(string_sculptor("ab cd"))

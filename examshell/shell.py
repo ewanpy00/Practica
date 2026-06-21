@@ -8,6 +8,7 @@ from exam_bank/. This is NOT the real 42 exam and is not affiliated with 42.
 
 import os
 import random
+import re
 import signal
 import sys
 import time
@@ -16,7 +17,7 @@ from datetime import datetime
 from examshell import content
 from examshell.grader import REPO_ROOT, grade
 
-# ---- colours (same codes as exam.hpp) ----
+# ---- colours ----
 BOLD = "\033[1m"
 RESET = "\033[0m"
 CYAN = "\033[36m"
@@ -26,14 +27,42 @@ LIME = "\033[92m"
 RED = "\033[91m"
 MAGENTA = "\033[95m"
 YELLOW = "\033[93m"
+GRAY = "\033[90m"
 REMOVE_LINE = "\033[1A\033[K"
 
 TIME_MAX_MIN = 180
+
+# Menu order and how many levels each exam runs (drawn randomly from the pool).
+RANKS_ORDER = ["03", "04"]
+EXAM_LEVELS = {"03": 6, "04": 4}
+
+ANSI_RE = re.compile(r"\033\[[0-9;]*m")
+BOX_WIDTH = 56
 
 
 def clear():
     sys.stdout.write("\033[2J\033[3J\033[H")
     sys.stdout.flush()
+
+
+def _vlen(text):
+    """Visible length of a string, ignoring ANSI colour codes."""
+    return len(ANSI_RE.sub("", text))
+
+
+def box(lines, color=CYAN, width=BOX_WIDTH):
+    """Return a rounded box around the given (possibly coloured) lines."""
+    inner = width - 2
+    out = [color + "╭" + "─" * inner + "╮" + RESET]
+    for line in lines:
+        pad = max(0, inner - 2 - _vlen(line))
+        out.append(color + "│ " + RESET + line + " " * pad + color + " │" + RESET)
+    out.append(color + "╰" + "─" * inner + "╯" + RESET)
+    return "\n".join(out)
+
+
+def prompt_glyph():
+    return "  " + CYAN + "›" + RESET + " "
 
 
 def sigd(*_):
@@ -107,109 +136,141 @@ class ExamShell:
         self.waiting_time = True
 
     # ----------------------------------------------------------------- menus
+    def _exam_row(self, key, rank):
+        levels = EXAM_LEVELS[rank]
+        glyph = CYAN + BOLD + "[%s]" % key + RESET
+        title = ("Python  ·  Exam Rank %s" % rank).ljust(28)
+        return "   %s  %s%s%s%s%d levels%s" % (
+            glyph, WHITE + BOLD, title, RESET, GRAY, levels, RESET)
+
     def main_menu(self):
+        keys = {str(i + 1): rank for i, rank in enumerate(RANKS_ORDER)}
         while True:
             clear()
-            print(WHITE + BOLD + "         42EXAM ")
-            print("     Made by " + LIME + "jcluzet" + RESET + "\n\n")
-            print(LIME + BOLD + "            3" + RESET)
-            print(WHITE + BOLD + "    | PYTHON EXAM RANK 03 |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
-            print(LIME + BOLD + "            4" + RESET)
-            print(WHITE + BOLD + "    | PYTHON EXAM RANK 04 |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
-            print(LIME + BOLD + "            s" + RESET)
-            print(WHITE + BOLD + "    |      SETTINGS       |" + RESET + BOLD + "\n     \\ ------------------- /\n\n")
-            print(WHITE + BOLD + "    Enter your choice (" + RED + "q" + WHITE + " to quit):" + RESET + "\n            ", end="")
-            choice = (ask() or "").strip().lower()
-            if choice in ("3", "4"):
-                return "%02d" % int(choice)
+            print()
+            print(box([
+                BOLD + WHITE + "Practica" + RESET + GRAY + "   Python practice trainer" + RESET,
+                GRAY + "Offline 42-style exam simulator" + RESET,
+            ]))
+            print()
+            print("  " + BOLD + WHITE + "Pick an exam to begin" + RESET + "\n")
+            for key, rank in keys.items():
+                print(self._exam_row(key, rank))
+            print()
+            print("   " + CYAN + BOLD + "[s]" + RESET + "  " + WHITE + "Settings" + RESET)
+            print("   " + RED + BOLD + "[q]" + RESET + "  " + WHITE + "Quit" + RESET)
+            print()
+            choice = (ask(prompt_glyph()) or "").strip().lower()
+            if choice in keys:
+                return keys[choice]
             if choice == "s":
                 self.settings_menu()
             elif choice in ("q", "quit", "exit", "0"):
-                print("\n  Bye!")
+                print("\n  " + GRAY + "See you next time." + RESET)
                 sys.exit(0)
 
+    def _setting_row(self, key, label, enabled):
+        state = (LIME + BOLD + "● ON " + RESET) if enabled else (GRAY + "○ OFF" + RESET)
+        return "   %s%s%s  %s%s%s %s" % (
+            CYAN + BOLD, "[%s]" % key, RESET, WHITE, label.ljust(42), RESET, state)
+
     def settings_menu(self):
-        choice = ""
-        while choice != "0":
+        while True:
             clear()
-            print(WHITE + BOLD + "     === SETTINGS MENU ===" + "\n" + RED +
-                  "          BACK" + RESET + WHITE + BOLD + " with " + RED + "0" + RESET + "\n")
-            print(LIME + "1." + WHITE + BOLD + " Enable exercises you already passed" +
-                  (LIME + BOLD + " ON" if self.redo_passed else RED + BOLD + " OFF") + RESET)
-            print(LIME + "2." + WHITE + BOLD + " Enable cheat commands" +
-                  (LIME + BOLD + " ON" if self.cheats else RED + BOLD + " OFF") + RESET)
-            choice = (ask() or "").strip()
+            print()
+            print(box([BOLD + WHITE + "Settings" + RESET]))
+            print()
+            print(self._setting_row("1", "Replay exercises you already passed", self.redo_passed))
+            print(self._setting_row("2", "Enable cheat commands", self.cheats))
+            print()
+            print("   " + RED + BOLD + "[0]" + RESET + "  " + WHITE + "Back" + RESET)
+            print()
+            choice = (ask(prompt_glyph()) or "").strip()
             if choice == "1":
                 self.redo_passed = not self.redo_passed
             elif choice == "2":
                 self.cheats = not self.cheats
-        print(REMOVE_LINE + RESET + WHITE + BOLD + "Save settings..." + RESET)
+            elif choice in ("0", "q"):
+                break
+        print("  " + GRAY + "Settings saved." + RESET)
         time.sleep(0.4)
 
     # ------------------------------------------------------------ onboarding
     def ask_param(self):
         while True:
             self.rank = self.main_menu()
+            levels = EXAM_LEVELS[self.rank]
             clear()
-            print(LIME + BOLD + "       PYTHON EXAM RANK %s" % self.rank + RESET + "\n")
-            print("   Confirm" + BOLD + WHITE + " Registration" + RESET + "?\n          (y/n)\n            ", end="")
-            if (ask() or "").strip().lower() == "y":
+            print()
+            print(box([
+                BOLD + WHITE + "Python  ·  Exam Rank %s" % self.rank + RESET,
+                GRAY + "%d levels   ·   %d hours   ·   TEST mode" % (levels, TIME_MAX_MIN // 60) + RESET,
+            ]))
+            print()
+            print("  Start this exam?  " + GRAY + "(y / n)" + RESET)
+            if (ask(prompt_glyph()) or "").strip().lower() in ("y", "yes"):
                 break
 
+        # The pool is every exercise in the rank; the exam runs a fixed number
+        # of levels, each drawn at random from that pool.
         self.exercises = content.exercises_for(self.rank)
-        self.level_max = len(self.exercises)
+        self.level_max = min(EXAM_LEVELS[self.rank], len(self.exercises))
         self.points_per = round(100 / self.level_max) if self.level_max else 0
 
         self.explanation()
         self.connexion()
-        print("You're connected " + LIME + self.username + RESET + "!")
-        print("You can log out at any time. If this program tells you you earned points,\n"
-              "then they will be counted whatever happens.\n")
-        print(BOLD + WHITE + "You are about to start the project " + LIME + BOLD + "ExamRank" +
-              self.rank + BOLD + WHITE + ", in " + YELLOW + "TEST" + BOLD + WHITE +
-              " mode, at level " + YELLOW + "0" + BOLD + WHITE + "." + RESET)
-        print(WHITE + BOLD + "You would have " + LIME + BOLD + "%dhrs " % (TIME_MAX_MIN // 60) +
-              BOLD + WHITE + "to complete this project." + RESET)
-        print("Press a key to start exam \U0001F3C1")
-        ask()
+        self.briefing()
         self.end_time = time.time() + TIME_MAX_MIN * 60
 
     def explanation(self):
         clear()
-        print("\n" + LIME + "        EXPLANATION : " + WHITE + BOLD + "\n")
-        print("     ⚠️  You have to work from a new window to keep this one " + LIME + "available" + WHITE + BOLD + "\n")
-        print("     \U0001F4DD A random subject named " + LIME + "subject.en.txt" + WHITE + BOLD + " will be generated")
-        print("         > You must write your file in the assignment folder (see subject),")
-        print("           this folder must be in folder: " + LIME + "rendu" + WHITE + BOLD + "\n")
-        print("     \U0001F393 Once completed, correct your project with: " + LIME + "grademe" + WHITE + BOLD)
-        print("         If your level is validated, you move on to the next level \U0001F389")
-        print("         If not, you have to start again ❌\n")
-        print("     ⌛️ Warning: the more you retry the same project, the longer you")
-        print("        will have to wait before it can be " + LIME + "corrected" + WHITE + BOLD + ".\n")
-        print(RED + "     ‼️  DISCLAIMER" + WHITE)
-        print("         This program is " + RED + "not" + WHITE + " the real 42 exam and is " + RED + "not" + WHITE + " made by 42.")
-        print("         Interface modelled on jcluzet/42_EXAM; grading is local and offline.\n")
-        print(RESET + "     (Press enter to continue...)\n      ", end="")
-        ask()
+        print()
+        print(box([BOLD + WHITE + "How it works" + RESET]))
+        print()
+        print("  " + CYAN + BOLD + "1." + RESET + "  Open a " + BOLD + WHITE + "second terminal" + RESET +
+              " — keep this one for grading.")
+        print("  " + CYAN + BOLD + "2." + RESET + "  Each level gives you a random subject at")
+        print("        " + GRAY + here() + "/subjects/subject.en.txt" + RESET)
+        print("  " + CYAN + BOLD + "3." + RESET + "  Write your answer in the " + LIME + "rendu" + RESET +
+              " folder named in the subject.")
+        print("  " + CYAN + BOLD + "4." + RESET + "  Run " + LIME + BOLD + "grademe" + RESET +
+              " here to test it.")
+        print("        " + GRAY + "Pass → next level    ·    Fail → try again" + RESET)
+        print()
+        print("  " + YELLOW + "Heads up  " + RESET + GRAY +
+              "repeated failures add a cooldown before the next grademe." + RESET)
+        print()
+        print("  " + GRAY + "Local practice tool — not the real 42 exam, not affiliated with 42." + RESET)
+        print()
+        print("  " + GRAY + "Press Enter to continue." + RESET)
+        ask(prompt_glyph())
 
     def connexion(self):
         clear()
-        typewrite("examshell", 0.05)
         print()
-        time.sleep(0.4)
-        clear()
-        print(BOLD + UNDERLINE + "ExamShell v2.1" + RESET + "\n")
-        print(BOLD + "login:" + RESET, end="")
+        print("  " + CYAN + "Connecting to exam session" + RESET, end="")
         sys.stdout.flush()
-        time.sleep(0.4)
-        typewrite(self.username, 0.07)
-        print("\n" + BOLD + "password:" + RESET, end="")
-        sys.stdout.flush()
-        for _ in range(random.randint(4, 13)):
-            time.sleep(0.08)
-            sys.stdout.write("*")
+        for _ in range(3):
+            time.sleep(0.35)
+            sys.stdout.write(GRAY + " ." + RESET)
             sys.stdout.flush()
-        print("\n\n")
+        time.sleep(0.3)
+        print()
+
+    def briefing(self):
+        clear()
+        print()
+        print(box([BOLD + WHITE + "You're in, " + LIME + self.username + RESET +
+                   BOLD + WHITE + "!" + RESET], color=LIME))
+        print()
+        print("  Project    " + WHITE + BOLD + "Python Exam Rank %s" % self.rank + RESET)
+        print("  Mode       " + YELLOW + "TEST" + RESET + GRAY + "  (your grade is not counted)" + RESET)
+        print("  Levels     " + WHITE + "%d" % self.level_max + RESET)
+        print("  Time       " + WHITE + "%d hours" % (TIME_MAX_MIN // 60) + RESET)
+        print()
+        print("  " + GRAY + "You can log out at any time." + RESET)
+        print("  " + GRAY + "Press Enter to start the exam." + RESET)
+        ask(prompt_glyph())
 
     # ------------------------------------------------------------- exercises
     def pick_exercise(self):
@@ -224,7 +285,7 @@ class ExamShell:
         return os.path.join(content.RENDU, self.current, self.current + ".py")
 
     def info(self):
-        grade = self.points_per * len(self.passed)
+        grade = round(len(self.passed) / self.level_max * 100) if self.level_max else 0
         print("\n==================================================================\n")
         print("Mode: " + YELLOW + "TEST" + RESET + " (Your grade will not be counted)")
         print("Current Grade: " + LIME + str(grade) + RESET + " / 100\n")
@@ -238,9 +299,9 @@ class ExamShell:
                   " for " + str(self.points_per) + " potential points (" + RED + "Failure" + RESET + ")")
         print("    " + YELLOW + str(self.assignement) + RESET + ": " + LIME + self.current + RESET +
               " for " + str(self.points_per) + " potential points (" + CYAN + "Current" + RESET + ")")
-        xp = (len(self.passed) + 1) / self.level_max * 100
+        xp = round((len(self.passed) + 1) / self.level_max * 100) if self.level_max else 0
         print("\nAssignment: " + LIME + self.current + RESET + " for " + LIME + BOLD +
-              ("%g" % xp) + RESET + "xp, try: " + YELLOW + str(self.assignement) + RESET + "\n")
+              ("%d" % xp) + RESET + "xp, try: " + YELLOW + str(self.assignement) + RESET + "\n")
         print("Subject location:  " + LIME + here() + "/subjects/subject.en.txt" + RESET)
         print("Exercise location: " + RED + here() + "/rendu/" + self.current + "/" + RESET)
         print("Here you " + RED + BOLD + "don't need" + RESET + " to use git.\n")
