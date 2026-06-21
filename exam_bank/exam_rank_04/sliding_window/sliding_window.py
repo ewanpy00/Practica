@@ -11,6 +11,6 @@ def max_sliding_window(nums, k):
 
     return result
 
-l = [1, 2, 5, -1, 0, 3]
-k = 3
-print(max_sliding_window(l, k))
+# l = [1, 2, 5, -1, 0, 3]
+# k = 3
+# print(max_sliding_window(l, k))

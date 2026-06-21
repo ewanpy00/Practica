@@ -1,7 +1,6 @@
 # 42 Python Exam Practice
 
-A collection of exam practice assignments, made as part of the
-**42** exam.
+*Practice tool for 42 students to prepare for the exams*
 
 This repository will be updated over time - as updates appear, as new assignments
 are added, or as inaccuracies in the problem wording are found and corrected.

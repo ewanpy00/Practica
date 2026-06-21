@@ -11,5 +11,5 @@ def whisper_cipher(text: str, shift: int) -> str:
 
     return "".join(result)
 
-print(whisper_cipher("hello", 3))
-print(whisper_cipher("khoor", -3))
+# print(whisper_cipher("hello", 3))
+# print(whisper_cipher("khoor", -3))

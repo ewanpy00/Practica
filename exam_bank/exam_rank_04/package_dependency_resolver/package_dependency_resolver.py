@@ -29,11 +29,11 @@ def topological_order(graph):
     
     return result
 
-graph = {
-    "A": ["B"],
-    "D": [],
-    "B": ["C", "D"],
-    "C": []
-}
+# graph = {
+#     "A": ["B"],
+#     "D": [],
+#     "B": ["C", "D"],
+#     "C": []
+# }
 
-print(topological_order(graph))  
+# print(topological_order(graph))  

@@ -3,6 +3,6 @@ def anagram(s1: str, s2: str) -> bool:
     b = sorted(c.lower() for c in s2 if c != " ")
     return a == b
 
-print(anagram("listen", "silent"))
-print(anagram("Triangle", "Integral"))
-print(anagram("hello", "world"))
+# print(anagram("listen", "silent"))
+# print(anagram("Triangle", "Integral"))
+# print(anagram("hello", "world"))

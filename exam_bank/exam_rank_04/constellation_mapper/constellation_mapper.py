@@ -29,7 +29,7 @@ def is_match(s, pattern):
 
     return helper(0, 0)
 
-print(is_match("aab", "a*b"))
-print(is_match("aaab", "a.b"))
-print(is_match("ab", "a.b"))
-print(is_match("ab", "a*b"))
+# print(is_match("aab", "a*b"))
+# print(is_match("aaab", "a.b"))
+# print(is_match("ab", "a.b"))
+# print(is_match("ab", "a*b"))

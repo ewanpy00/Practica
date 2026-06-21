@@ -7,5 +7,5 @@ def inter(s1: str, s2: str) -> str:
 
     return result
 
-print(inter("hello", "world"))
-print(inter("banana", "band"))
+# print(inter("hello", "world"))
+# print(inter("banana", "band"))

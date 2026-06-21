@@ -26,4 +26,4 @@ def min_palindrome_partitions(s):
     return dp[n - 1] + 1
 
 
-print(min_palindrome_partitions("abddbba"))
+# print(min_palindrome_partitions("abaaabaa"))
