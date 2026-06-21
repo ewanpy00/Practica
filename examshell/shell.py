@@ -240,7 +240,13 @@ class ExamShell:
         print("  " + YELLOW + "Heads up  " + RESET + GRAY +
               "repeated failures add a cooldown before the next grademe." + RESET)
         print()
-        print("  " + GRAY + "Local practice tool — not the real 42 exam, not affiliated with 42." + RESET)
+        print(box([
+            RED + BOLD + "⚠  DISCLAIMER" + RESET,
+            WHITE + BOLD + "Local practice tool — " + RED + BOLD + "NOT" + RESET +
+            WHITE + BOLD + " the real 42 exam," + RESET,
+            WHITE + BOLD + "and " + RED + BOLD + "NOT" + RESET + WHITE + BOLD +
+            " affiliated with 42." + RESET,
+        ], color=RED))
         print()
         print("  " + GRAY + "Press Enter to continue." + RESET)
         ask(prompt_glyph())
