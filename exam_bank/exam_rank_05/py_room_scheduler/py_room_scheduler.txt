@@ -1,0 +1,30 @@
+Assignment name  : py_room_scheduler
+Expected files   : py_room_scheduler.py
+--------------------------------------------------------------------------------
+
+Write a function that determines the minimum number of meeting rooms
+required to schedule a list of meeting time intervals without overlap, and
+assigns meetings to rooms.
+
+Each meeting is represented as a list of two integers [start_time, end_time].
+
+The function should:
+- Sort meetings by start time and assign them to available rooms
+  sequentially.
+- Return a dictionary containing:
+    "total_rooms": the integer count of rooms required.
+    "schedule": a list of lists containing the scheduled intervals for each
+                room.
+- If the input list is empty, return {"total_rooms": 0, "schedule": []}.
+
+Prototype:
+
+    def py_room_scheduler(meetings: list[list[int]]) -> dict:
+
+Examples:
+
+    py_room_scheduler([[0, 30], [5, 10], [15, 20]])
+        ->  {"total_rooms": 2, "schedule": [[[0, 30]], [[5, 10], [15, 20]]]}
+
+    py_room_scheduler([])
+        ->  {"total_rooms": 0, "schedule": []}
