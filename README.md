@@ -33,6 +33,17 @@ Grading is **differential**: your function is run against the reference solution
 (used as an oracle) on the subject examples plus many random inputs. On failure,
 the failing input/expected/got is saved to `traces/`.
 
+Available exams (each level is drawn at random from the rank's pool):
+
+| Exam | Pool | Levels | Score per level |
+|------|------|--------|-----------------|
+| Rank 03 | 14 tasks | 6 | ~17 points |
+| Rank 04 | 7 tasks | 4 | 25 points |
+| Rank 05 | 7 tasks | 5 | 20 points |
+
+The score is shown after every `grademe` (`Current Grade: X / 100`); clearing the
+last level ends the exam with a final congratulation message.
+
 Just launch it:
 
 ```sh
@@ -55,6 +66,18 @@ grading oracle.
 > The shell interface is modelled on [jcluzet/42_EXAM](https://github.com/jcluzet/42_EXAM).
 > This is **not** the real 42 exam and is not affiliated with 42; grading runs
 > locally and offline.
+
+## Recent updates
+
+- **Rank 05 added** — 7 new tasks (subject + reference solution) from 42exam.net,
+  fully playable in `examshell`.
+- **Multi-function tasks** — the grader now supports subjects that require more
+  than one function (e.g. `compress` + `decompress`).
+- **Order-independent checks** — tasks with several valid answers
+  (`py_room_scheduler`, `py_prism_detector`) are validated by properties, not by
+  exact output order.
+- **Clearer grader errors** — a missing function now reports
+  `function X() is not defined in your file` instead of a generic import error.
 
 ## Exam Rank 05
 
