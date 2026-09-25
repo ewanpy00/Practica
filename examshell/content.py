@@ -38,12 +38,16 @@ def read_subject(rank, exercise):
         return handle.read()
 
 
-def signature(rank, exercise):
-    func = specs.REGISTRY[exercise]["func"]
-    with open(os.path.join(rank_dir(rank), exercise, exercise + ".py")) as handle:
-        source = handle.read()
+def _one_signature(source, func):
     match = re.search(r"^(def\s+%s\b.*:)\s*$" % re.escape(func), source, re.M)
     return match.group(1) if match else "def %s():" % func
+
+
+def signature(rank, exercise):
+    funcs = specs.REGISTRY[exercise].get("funcs") or [specs.REGISTRY[exercise]["func"]]
+    with open(os.path.join(rank_dir(rank), exercise, exercise + ".py")) as handle:
+        source = handle.read()
+    return [_one_signature(source, func) for func in funcs]
 
 
 def scaffold(rank, exercise):
@@ -52,9 +56,10 @@ def scaffold(rank, exercise):
     os.makedirs(folder, exist_ok=True)
     path = os.path.join(folder, exercise + ".py")
     if not os.path.exists(path):
+        stub = "\n".join(sig + "\n    # Write your solution here\n    pass\n"
+                          for sig in signature(rank, exercise))
         with open(path, "w") as handle:
-            handle.write(signature(rank, exercise) +
-                         "\n    # Write your solution here\n    pass\n")
+            handle.write(stub)
     return path
 
 

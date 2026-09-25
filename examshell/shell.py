@@ -33,8 +33,8 @@ REMOVE_LINE = "\033[1A\033[K"
 TIME_MAX_MIN = 180
 
 # Menu order and how many levels each exam runs (drawn randomly from the pool).
-RANKS_ORDER = ["03", "04"]
-EXAM_LEVELS = {"03": 6, "04": 4}
+RANKS_ORDER = ["03", "04", "05"]
+EXAM_LEVELS = {"03": 6, "04": 4, "05": 5}
 
 ANSI_RE = re.compile(r"\033\[[0-9;]*m")
 BOX_WIDTH = 56
