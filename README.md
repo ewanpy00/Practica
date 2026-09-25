@@ -9,6 +9,7 @@ The project is split into exam *content* and the exam *simulator*:
 
 - [`exam_rank_03/`](exam_bank/exam_rank_03/) — Python tasks based on 42exam.net Rank 03.
 - [`exam_rank_04/`](exam_bank/exam_rank_04/) — Rank 04 tasks, recreated from memory.
+- [`exam_rank_05/`](exam_bank/exam_rank_05/) — Rank 05 tasks, based on 42exam.net Rank 05.
 - [`examshell/`](examshell/) — a local grademe-style exam shell that renders
   subjects and grades your code.
 
@@ -54,6 +55,18 @@ grading oracle.
 > The shell interface is modelled on [jcluzet/42_EXAM](https://github.com/jcluzet/42_EXAM).
 > This is **not** the real 42 exam and is not affiliated with 42; grading runs
 > locally and offline.
+
+## Exam Rank 05
+
+| Folder | Function | Summary |
+|--------|----------|---------|
+| [py_compress_decompress](exam_bank/exam_rank_05/py_compress_decompress/) | `compress(s)` / `decompress(s)` | run-length encode and decode a string |
+| [py_spiral_matrix](exam_bank/exam_rank_05/py_spiral_matrix/) | `generate_spiral(n)` | build an n x n matrix filled in clockwise spiral order |
+| [py_graph_cycle_detector](exam_bank/exam_rank_05/py_graph_cycle_detector/) | `py_graph_cycle_detector(graph)` | detect a cycle in a directed graph |
+| [py_room_scheduler](exam_bank/exam_rank_05/py_room_scheduler/) | `py_room_scheduler(meetings)` | minimum meeting rooms needed and their schedules |
+| [py_island_matrix_counter](exam_bank/exam_rank_05/py_island_matrix_counter/) | `island_matrix_counter(matrix)` | count connected "islands" of `"1"` cells |
+| [py_prism_detector](exam_bank/exam_rank_05/py_prism_detector/) | `prism_detector(grid, pattern)` | find a word in a grid across all 8 directions |
+| [py_word_ladder](exam_bank/exam_rank_05/py_word_ladder/) | `word_ladder(start, end, sentence)` | shortest one-letter-at-a-time transformation length |
 
 ## Exam Rank 04
 
