@@ -1,0 +1,27 @@
+Assignment name  : py_compress_decompress
+Expected files   : py_compress_decompress.py
+--------------------------------------------------------------------------------
+
+Write two functions: compress and decompress.
+
+compress(s: str) -> str:
+    Takes a string and compresses consecutive repeated characters by
+    appending the count after the character. If a character appears only
+    once consecutively, omit the number '1'. If the input string is empty,
+    return an empty string.
+
+decompress(s: str) -> str:
+    Takes a compressed string and expands it back to its uncompressed form.
+    Handles multi-digit counts (e.g. "a12" -> 12 'a's). If no count follows
+    a character, it counts as 1.
+
+Prototype:
+
+    def compress(s: str) -> str:
+    def decompress(s: str) -> str:
+
+Examples:
+
+    compress("aabcccccaaa")    ->  "a2bc5a3"
+    decompress("a2bc5a3")      ->  "aabcccccaaa"
+    compress("")               ->  ""

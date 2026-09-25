@@ -1,0 +1,18 @@
+Assignment name  : py_spiral_matrix
+Expected files   : py_spiral_matrix.py
+--------------------------------------------------------------------------------
+
+Write a function that generates an n x n 2D matrix filled with numbers from
+1 to n^2 in clockwise spiral order.
+
+The spiral starts at the top-left cell (0, 0) moving right, then down, then
+left, then up, continuing inwards.
+
+Prototype:
+
+    def generate_spiral(n: int) -> list[list[int]]:
+
+Examples:
+
+    generate_spiral(3)  ->  [[1, 2, 3], [8, 9, 4], [7, 6, 5]]
+    generate_spiral(1)  ->  [[1]]
