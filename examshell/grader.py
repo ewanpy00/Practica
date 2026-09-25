@@ -9,7 +9,7 @@ import sys
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXAM_BANK = os.path.join(REPO_ROOT, "exam_bank")
 
-RANKS = {"03": "exam_rank_03", "04": "exam_rank_04"}
+RANKS = {"03": "exam_rank_03", "04": "exam_rank_04", "05": "exam_rank_05"}
 
 
 def rank_dir(rank):

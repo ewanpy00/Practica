@@ -32,6 +32,107 @@ def _word(rng, nmin, nmax, alpha=LOWER):
 
 
 # --------------------------------------------------------------------------
+# Rank 05 generators
+# --------------------------------------------------------------------------
+def gen_compress(rng):
+    return ("compress", (_word(rng, 0, 12, LOWER),))
+
+
+def gen_decompress(rng):
+    parts = []
+    for _ in range(rng.randint(0, 6)):
+        ch = rng.choice(LOWER)
+        if rng.random() < 0.6:
+            parts.append(ch + str(rng.randint(1, 20)))
+        else:
+            parts.append(ch)
+    return ("decompress", ("".join(parts),))
+
+
+def gen_compress_decompress(rng):
+    return gen_compress(rng) if rng.random() < 0.5 else gen_decompress(rng)
+
+
+def gen_spiral(rng):
+    return (rng.randint(0, 6),)
+
+
+def gen_graph_cycle(rng):
+    nodes = list(range(rng.randint(0, 6)))
+    graph = {node: [] for node in nodes}
+    for node in nodes:
+        for other in nodes:
+            if other != node and rng.random() < 0.25:
+                graph[node].append(other)
+    return (graph,)
+
+
+def gen_room_scheduler(rng):
+    n = rng.randint(0, 8)
+    meetings = []
+    for _ in range(n):
+        start = rng.randint(0, 30)
+        end = start + rng.randint(1, 15)
+        meetings.append([start, end])
+    return (meetings,)
+
+
+def check_room_scheduler(args, got, ref):
+    meetings = args[0]
+    if not isinstance(got, dict) or "total_rooms" not in got or "schedule" not in got:
+        return False
+    if got["total_rooms"] != ref["total_rooms"]:
+        return False
+    schedule = got["schedule"]
+    if not isinstance(schedule, list) or len(schedule) != got["total_rooms"]:
+        return False
+    flattened = [tuple(m) for room in schedule for m in room]
+    if sorted(flattened) != sorted(tuple(m) for m in meetings):
+        return False
+    for room in schedule:
+        ordered = sorted(room, key=lambda iv: iv[0])
+        for i in range(1, len(ordered)):
+            if ordered[i][0] < ordered[i - 1][1]:
+                return False
+    return True
+
+
+def gen_island_matrix(rng):
+    rows = rng.randint(0, 5)
+    cols = rng.randint(0, 5) if rows else 0
+    return ([[rng.choice(["1", "0"]) for _ in range(cols)] for _ in range(rows)],)
+
+
+def gen_prism(rng):
+    alpha = "AB" if rng.random() < 0.5 else "ABC"
+    rows = rng.randint(1, 5)
+    cols = rng.randint(1, 5)
+    grid = ["".join(rng.choice(alpha) for _ in range(cols)) for _ in range(rows)]
+    pattern = "".join(rng.choice(alpha) for _ in range(rng.randint(1, 4)))
+    return (grid, pattern)
+
+
+def check_prism(args, got, ref):
+    if not isinstance(got, list):
+        return False
+    try:
+        return sorted(tuple(m) for m in got) == sorted(tuple(m) for m in ref)
+    except TypeError:
+        return False
+
+
+def gen_word_ladder(rng):
+    length = rng.randint(3, 4)
+    alpha = "ab" if rng.random() < 0.5 else "abc"
+    start = _word(rng, length, length, alpha)
+    end = _word(rng, length, length, alpha)
+    sentence = [_word(rng, length, length, alpha) for _ in range(rng.randint(0, 8))]
+    if end not in sentence and rng.random() < 0.6:
+        sentence.append(end)
+    return (start, end, sentence)
+
+
+# --------------------------------------------------------------------------
 # Rank 04 generators
 # --------------------------------------------------------------------------
 def gen_array_merger(rng):
@@ -196,6 +297,46 @@ def gen_whisper(rng):
 
 
 REGISTRY = {
+    # ---- Rank 05 ----
+    "py_compress_decompress": {
+        "funcs": ["compress", "decompress"], "rank": "05",
+        "gen": gen_compress_decompress, "n": 80,
+        "cases": [("compress", ("aabcccccaaa",)), ("decompress", ("a2bc5a3",)),
+                  ("compress", ("",))],
+    },
+    "py_spiral_matrix": {
+        "func": "generate_spiral", "rank": "05", "gen": gen_spiral, "n": 30,
+        "cases": [(3,), (1,)],
+    },
+    "py_graph_cycle_detector": {
+        "func": "py_graph_cycle_detector", "rank": "05", "gen": gen_graph_cycle, "n": 80,
+        "cases": [({0: [1], 1: [2], 2: [0]},), ({0: [1], 1: [2], 2: []},), ({},)],
+    },
+    "py_room_scheduler": {
+        "func": "py_room_scheduler", "rank": "05", "gen": gen_room_scheduler, "n": 60,
+        "check": check_room_scheduler,
+        "cases": [([[0, 30], [5, 10], [15, 20]],), ([],)],
+    },
+    "py_island_matrix_counter": {
+        "func": "island_matrix_counter", "rank": "05", "gen": gen_island_matrix, "n": 60,
+        "cases": [
+            ([["1", "1", "1", "1", "0"], ["1", "1", "1", "0", "0"],
+              ["1", "1", "1", "1", "0"], ["0", "0", "0", "0", "0"]],),
+            ([["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"],
+              ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]],),
+            ([],),
+        ],
+    },
+    "py_prism_detector": {
+        "func": "prism_detector", "rank": "05", "gen": gen_prism, "n": 60,
+        "check": check_prism,
+        "cases": [(["CAT", "A..", "T.."], "CAT"), ([], "CAT")],
+    },
+    "py_word_ladder": {
+        "func": "word_ladder", "rank": "05", "gen": gen_word_ladder, "n": 60,
+        "cases": [("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]),
+                  ("hit", "cog", ["hot", "dot", "dog", "lot", "log"])],
+    },
     # ---- Rank 04 ----
     "array_merger": {
         "func": "merge_sorted", "rank": "04", "gen": gen_array_merger, "n": 60,
