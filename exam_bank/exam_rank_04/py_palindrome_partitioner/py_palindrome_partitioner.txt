@@ -1,0 +1,24 @@
+Assignment name  : py_palindrome_partitioner
+Expected files   : py_palindrome_partitioner.py
+--------------------------------------------------------------------------------
+
+Given a string `s`, find the minimum number of cuts needed to partition it such that every resulting substring is a palindrome.
+
+A cut divides the string between two characters. With `c` cuts, the string is split into `c + 1` substrings. We want the minimum number of cuts `c` such that all parts are palindromes.
+
+Return this minimum number of cuts (an integer).
+
+Constraints:
+- An empty string or a string of length 1 is already a palindrome -> 0 cuts.
+- If the entire string is already a palindrome -> 0 cuts.
+- In the worst case (all characters are distinct), the result is len(s) - 1 cuts.
+
+Prototype:
+
+    def palindrome_partitioner(s: str) -> int:
+
+Examples:
+
+    palindrome_partitioner("aab")  ->  1
+    palindrome_partitioner("aba")  ->  0
+    palindrome_partitioner("abc")  ->  2

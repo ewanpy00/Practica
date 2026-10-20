@@ -26,8 +26,12 @@ def cmd_list(args):
         print("\nExam Rank %s" % rank)
         for name in exercises_for(rank):
             spec = specs.REGISTRY[name]
-            funcs = spec.get("funcs") or [spec["func"]]
-            print("  %-32s %s" % (name, ", ".join("%s()" % f for f in funcs)))
+            if "cls" in spec:
+                label = "class %s" % spec["cls"]
+            else:
+                funcs = spec.get("funcs") or [spec["func"]]
+                label = ", ".join("%s()" % f for f in funcs)
+            print("  %-32s %s" % (name, label))
     return 0
 
 

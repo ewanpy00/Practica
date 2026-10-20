@@ -43,10 +43,27 @@ def _one_signature(source, func):
     return match.group(1) if match else "def %s():" % func
 
 
+def _class_stub(source, cls):
+    """Return a stub of ``class cls`` with every method of the reference as ``pass``."""
+    match = re.search(r"^class\s+%s\b.*?(?=^\S|\Z)" % re.escape(cls), source, re.M | re.S)
+    body = match.group(0) if match else "class %s:\n" % cls
+    lines = [body.splitlines()[0]]
+    for sig in re.findall(r"^    (def\s+[^_\W]\w*\(.*:)\s*$|^    (def\s+__init__\(.*:)\s*$",
+                          body, re.M):
+        lines.append("    " + (sig[0] or sig[1]))
+        lines.append("        # Write your solution here")
+        lines.append("        pass")
+        lines.append("")
+    return "\n".join(lines)
+
+
 def signature(rank, exercise):
-    funcs = specs.REGISTRY[exercise].get("funcs") or [specs.REGISTRY[exercise]["func"]]
+    spec = specs.REGISTRY[exercise]
     with open(os.path.join(rank_dir(rank), exercise, exercise + ".py")) as handle:
         source = handle.read()
+    if "cls" in spec:
+        return [_class_stub(source, spec["cls"])]
+    funcs = spec.get("funcs") or [spec["func"]]
     return [_one_signature(source, func) for func in funcs]
 
 
@@ -56,7 +73,8 @@ def scaffold(rank, exercise):
     os.makedirs(folder, exist_ok=True)
     path = os.path.join(folder, exercise + ".py")
     if not os.path.exists(path):
-        stub = "\n".join(sig + "\n    # Write your solution here\n    pass\n"
+        stub = "\n".join(sig if sig.startswith("class ") else
+                          sig + "\n    # Write your solution here\n    pass\n"
                           for sig in signature(rank, exercise))
         with open(path, "w") as handle:
             handle.write(stub)

@@ -8,8 +8,9 @@ are added, or as inaccuracies in the problem wording are found and corrected.
 The project is split into exam *content* and the exam *simulator*:
 
 - [`exam_rank_03/`](exam_bank/exam_rank_03/) — Python tasks based on 42exam.net Rank 03.
-- [`exam_rank_04/`](exam_bank/exam_rank_04/) — Rank 04 tasks, recreated from memory.
+- [`exam_rank_04/`](exam_bank/exam_rank_04/) — Rank 04 tasks, based on 42exam.net Rank 04.
 - [`exam_rank_05/`](exam_bank/exam_rank_05/) — Rank 05 tasks, based on 42exam.net Rank 05.
+- [`exam_rank_06/`](exam_bank/exam_rank_06/) — Rank 06 tasks (functions *and* classes), based on 42exam.net Rank 06.
 - [`examshell/`](examshell/) — a local grademe-style exam shell that renders
   subjects and grades your code.
 
@@ -40,6 +41,7 @@ Available exams (each level is drawn at random from the rank's pool):
 | Rank 03 | 14 tasks | 6 | ~17 points |
 | Rank 04 | 7 tasks | 4 | 25 points |
 | Rank 05 | 7 tasks | 5 | 20 points |
+| Rank 06 | 8 tasks | 4 | 25 points |
 
 The score is shown after every `grademe` (`Current Grade: X / 100`); clearing the
 last level ends the exam with a final congratulation message.
@@ -68,6 +70,16 @@ grading oracle.
 > locally and offline.
 
 ## Recent updates
+
+- **Rank 06 added** — 8 tasks from 42exam.net (trie, pack/unpack, topological order,
+  union-find, LRU cache, min-heap, ...). Several of them are *classes*, so the grader
+  now replays random method-call sequences on both your class and the reference.
+- **Rank 04 replaced with the official tasks** — the earlier set was recreated from
+  memory; it now mirrors 42exam.net (`py_array_rotation_detector`,
+  `py_merge_sorted_lists`, `py_sliding_window_maximum`, ...).
+- **Rank 03 synced with the site** — `py_echo_validator("")` is now `False`,
+  `py_string_sculptor` no longer resets the alternation on spaces, and every
+  subject carries the full list of official examples.
 
 - **Rank 05 added** — 7 new tasks (subject + reference solution) from 42exam.net,
   fully playable in `examshell`.

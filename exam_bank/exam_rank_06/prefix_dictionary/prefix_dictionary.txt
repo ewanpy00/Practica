@@ -1,0 +1,36 @@
+Assignment name  : prefix_dictionary
+Expected files   : prefix_dictionary.py
+--------------------------------------------------------------------------------
+
+Implement a class named `PrefixDictionary` that represents a prefix tree (Trie).
+
+The class must provide the following methods:
+
+1. `__init__(self)`:
+Initializes an empty prefix dictionary.
+
+2. `insert(self, word: str) -> None`:
+Inserts the string `word` into the prefix dictionary.
+
+3. `search(self, word: str) -> bool`:
+Returns `True` if the exact string `word` has been inserted into the prefix dictionary, and `False` otherwise.
+
+4. `starts_with(self, prefix: str) -> bool`:
+Returns `True` if there is any previously inserted string that begins with the given `prefix`, and `False` otherwise.
+
+All inputs consist only of lowercase English letters (`'a'` - `'z'`).
+
+Prototype:
+
+    class PrefixDictionary:
+        def __init__(self):
+        def insert(self, word: str) -> None:
+        def search(self, word: str) -> bool:
+        def starts_with(self, prefix: str) -> bool:
+
+Examples:
+
+    d = PrefixDictionary(); d.insert("apple"); d.search("apple")                 ->  True
+    d = PrefixDictionary(); d.insert("apple"); d.search("app")                   ->  False
+    d = PrefixDictionary(); d.insert("apple"); d.starts_with("app")              ->  True
+    d = PrefixDictionary(); d.insert("apple"); d.insert("app"); d.search("app")  ->  True

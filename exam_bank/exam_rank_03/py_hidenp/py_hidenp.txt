@@ -2,10 +2,10 @@ Assignment name  : py_hidenp
 Expected files   : py_hidenp.py
 --------------------------------------------------------------------------------
 
-Write a function that checks if the string 'small' is a subsequence of 'big'.
-
-A subsequence means all characters of 'small' appear in 'big' in the same
-order, but not necessarily consecutively. Function is case-sensitive.
+Write a function that checks if the string 'small' is a subsequence
+of 'big'. A subsequence means all characters of 'small' appear in 'big'
+in the same order, but not necessarily consecutively.
+Function is case-sensitive.
 
 Prototype:
 
@@ -13,6 +13,10 @@ Prototype:
 
 Examples:
 
-    hidenp("abc", "a1b2c3")  ->  True
-    hidenp("abc", "acb")     ->  False
-    hidenp("", "anything")   ->  True
+    hidenp("abc", "a1b2c3")               ->  True
+    hidenp("ace", "abcde")                ->  True
+    hidenp("aec", "abcde")                ->  False
+    hidenp("", "abc")                     ->  True
+    hidenp("abc", "ab")                   ->  False
+    hidenp("aaaa", "aaa")                 ->  False
+    hidenp("sing","subsequence testing")  ->  True

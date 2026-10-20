@@ -2,11 +2,10 @@ Assignment name  : py_whisper_cipher
 Expected files   : py_whisper_cipher.py
 --------------------------------------------------------------------------------
 
-Write a function that creates a Caesar cipher by shifting letters in a string by
-a given amount.
-
-Non-alphabetic characters should remain unchanged. The shift can be negative
-(shift left).
+Write a function that creates a Caesar cipher by shifting letters in a
+string by a given amount.
+Non-alphabetic characters should remain unchanged.
+The shift can be negative (shift left).
 
 Prototype:
 
@@ -14,5 +13,9 @@ Prototype:
 
 Examples:
 
-    whisper_cipher("hello", 3)   ->  "khoor"
-    whisper_cipher("khoor", -3)  ->  "hello"
+    whisper_cipher("hello", 3)         ->  "khoor"
+    whisper_cipher("Hello World!", 1)  ->  "Ifmmp Xpsme!"
+    whisper_cipher("xyz", 3)           ->  "abc"
+    whisper_cipher("ABC123def", 5)     ->  "FGH123ijk"
+    whisper_cipher("", 10)             ->  ""
+    whisper_cipher("abc", -3)          ->  "xyz"

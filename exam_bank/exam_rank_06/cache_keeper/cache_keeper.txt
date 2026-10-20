@@ -1,0 +1,35 @@
+Assignment name  : cache_keeper
+Expected files   : cache_keeper.py
+--------------------------------------------------------------------------------
+
+Implement a class named `CacheKeeper` that implements a Least Recently Used (LRU) cache with a fixed capacity.
+
+The class must provide the following methods:
+
+1. `__init__(self, capacity: int)`:
+Initializes the LRU cache with a positive `capacity`.
+
+2. `get(self, key: int) -> int`:
+Returns the value of the `key` if the key exists in the cache, or `-1` if it does not. A successful `get` marks the accessed key as most recently used.
+
+3. `put(self, key: int, value: int) -> None`:
+Inserts or updates the `key` with `value`. The inserted or updated key becomes most recently used. If the number of keys exceeds `capacity`, evicts the least recently used key.
+
+Operations should aim for average $O(1)$ time complexity.
+You may not use `collections.OrderedDict`.
+
+Forbidden functions : collections.OrderedDict
+
+Prototype:
+
+    class CacheKeeper:
+        def __init__(self, capacity: int):
+        def get(self, key: int) -> int:
+        def put(self, key: int, value: int) -> None:
+
+Examples:
+
+    c = CacheKeeper(2); c.put(1, 1); c.put(2, 2); c.get(1)                         ->  1
+    c = CacheKeeper(2); c.put(1, 1); c.put(2, 2); c.put(3, 3); c.get(1)            ->  -1
+    c = CacheKeeper(2); c.put(1, 1); c.put(2, 2); c.get(1); c.put(3, 3); c.get(2)  ->  -1
+    c = CacheKeeper(2); c.put(1, 1); c.put(2, 2); c.get(1); c.put(3, 3); c.get(1)  ->  1

@@ -1,0 +1,30 @@
+Assignment name  : pack_strings
+Expected files   : pack_strings.py
+--------------------------------------------------------------------------------
+
+Write two functions to serialize and deserialize a list of strings:
+
+1. `pack(strs: list[str]) -> str`:
+Encodes a list of strings into a single string.
+
+2. `unpack(s: str) -> list[str]`:
+Decodes the formatted string back into the original list of strings.
+
+For every valid list of strings, `unpack(pack(strs))` must evaluate to `strs`.
+The strings may contain any characters (including digits, delimiters like `#` or `:`, spaces, symbols, and newlines) and may be empty.
+An empty list `[]` and a list containing a single empty string `[""]` must be distinguished and reconstructed correctly.
+You may not use `json`, `pickle`, or `eval`.
+
+Forbidden functions : json, pickle, eval
+
+Prototype:
+
+    def pack(strs: list[str]) -> str:
+    def unpack(s: str) -> list[str]:
+
+Examples:
+
+    unpack(pack(["hello", "world"]))             ->  ["hello", "world"]
+    unpack(pack([]))                             ->  []
+    unpack(pack([""]))                           ->  [""]
+    unpack(pack(["42", "exam#net", "level:6"]))  ->  ["42", "exam#net", "level:6"]

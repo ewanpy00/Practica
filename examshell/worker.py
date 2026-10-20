@@ -31,9 +31,65 @@ def _fmt(args):
     return ", ".join(repr(a) for a in args)
 
 
+def _fmt_ops(name, ctor_args, ops, upto):
+    lines = ["obj = %s(%s)" % (name, _fmt(ctor_args))]
+    lines += ["obj.%s(%s)" % (m, _fmt(a)) for m, a in ops[:upto + 1]]
+    return "; ".join(lines)
+
+
+def _call(obj, method, args):
+    if method == "same_root":       # find() may legitimately pick another root
+        return obj.find(args[0]) == obj.find(args[1])
+    return getattr(obj, method)(*copy.deepcopy(args))
+
+
+def _run_class(spec, ref_module, student_module, rng):
+    name = spec["cls"]
+    try:
+        ref_cls = getattr(ref_module, name)
+    except Exception as exc:
+        return {"status": "error", "detail": "reference solution failed: %r" % exc}
+    student_cls = getattr(student_module, name, None)
+    if student_cls is None:
+        return {"status": "ko", "detail": "class %s is not defined in your file" % name}
+    if not isinstance(student_cls, type):
+        return {"status": "ko", "detail": "%s is defined but is not a class" % name}
+
+    inputs = [tuple(c) for c in spec.get("cases", [])]
+    inputs += [spec["gen"](rng) for _ in range(spec.get("n", 0))]
+
+    passed = 0
+    for ctor_args, ops in inputs:
+        ref = ref_cls(*copy.deepcopy(ctor_args))
+        try:
+            student = student_cls(*copy.deepcopy(ctor_args))
+        except Exception as exc:
+            return {"status": "ko", "tests": passed,
+                    "detail": "%s(%s) raised %s: %s"
+                              % (name, _fmt(ctor_args), type(exc).__name__, exc)}
+        for i, (method, args) in enumerate(ops):
+            expected = _call(ref, method, args)
+            try:
+                got = _call(student, method, args)
+            except AttributeError as exc:
+                return {"status": "ko", "tests": passed,
+                        "detail": "%s has no usable method %s(): %s" % (name, method, exc)}
+            except Exception as exc:
+                return {"status": "ko", "tests": passed,
+                        "detail": "%s raised %s: %s\n    after: %s"
+                                  % (method, type(exc).__name__, exc,
+                                     _fmt_ops(name, ctor_args, ops, i))}
+            if got != expected or isinstance(got, bool) != isinstance(expected, bool):
+                return {"status": "ko", "tests": passed,
+                        "detail": "%s\n    expected: %r\n    got:      %r"
+                                  % (_fmt_ops(name, ctor_args, ops, i), expected, got)}
+        passed += 1
+    return {"status": "ok", "tests": passed}
+
+
 def _run(rank_dir, exercise, student_file, seed):
     spec = specs.REGISTRY[exercise]
-    func_names = spec.get("funcs") or [spec["func"]]
+    func_names = spec.get("funcs") or ([spec["func"]] if "func" in spec else [])
     ref_path = os.path.join(rank_dir, exercise, exercise + ".py")
 
     try:
@@ -51,6 +107,10 @@ def _run(rank_dir, exercise, student_file, seed):
     except Exception as exc:
         return {"status": "ko", "detail": "could not import your file: %r" % exc}
 
+    rng = random.Random(seed)
+    if "cls" in spec:
+        return _run_class(spec, ref_module, student_module, rng)
+
     student_funcs = {}
     for name in func_names:
         try:
@@ -63,7 +123,17 @@ def _run(rank_dir, exercise, student_file, seed):
                     "detail": "%s is defined but is not a function" % name}
         student_funcs[name] = fn
 
-    rng = random.Random(seed)
+    selftest = spec.get("selftest")
+    if selftest:
+        try:
+            detail = selftest(student_funcs, rng)
+        except Exception as exc:
+            return {"status": "ko",
+                    "detail": "your functions raised %s: %s" % (type(exc).__name__, exc)}
+        if detail:
+            return {"status": "ko", "detail": detail}
+        return {"status": "ok", "tests": 85}
+
     multi = "funcs" in spec
     inputs = [tuple(c) for c in spec.get("cases", [])]
     gen = spec.get("gen")

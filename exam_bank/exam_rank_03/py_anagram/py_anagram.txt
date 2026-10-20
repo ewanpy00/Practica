@@ -3,9 +3,8 @@ Expected files   : py_anagram.py
 --------------------------------------------------------------------------------
 
 Write a function that checks if two strings are anagrams.
-
-They must contain exactly the same letters with the same quantity, ignoring
-case and spaces.
+They must contain exactly the same letters with the same quantity,
+ignoring case and spaces.
 
 Prototype:
 
@@ -13,6 +12,9 @@ Prototype:
 
 Examples:
 
-    anagram("listen", "silent")      ->  True
-    anagram("Triangle", "Integral")  ->  True
-    anagram("hello", "world")        ->  False
+    anagram("listen", "silent")         ->  True
+    anagram("Triangle", "Integral")     ->  True
+    anagram("Dormitory", "Dirty Room")  ->  True
+    anagram("hello", "world")           ->  False
+    anagram("", "")                     ->  True
+    anagram("abc", "abcc")              ->  False

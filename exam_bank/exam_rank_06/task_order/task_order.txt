@@ -1,0 +1,25 @@
+Assignment name  : task_order
+Expected files   : task_order.py
+--------------------------------------------------------------------------------
+
+There are `n` tasks labeled from `0` to `n - 1`. You are given an integer `n` and a list of dependency pairs `prereqs`, where each pair `[a, b]` indicates that task `b` must be completed before task `a` can be started.
+
+Write a function `task_order` that returns a valid execution order in which all tasks can be finished.
+
+Requirements:
+- When multiple tasks have no remaining prerequisites and can be chosen at the same time, always pick the task with the smallest index (lexicographical tie-breaking).
+- If it is impossible to finish all tasks due to a circular dependency (cycle), return an empty list `[]`.
+- You may not use `graphlib.TopologicalSorter`.
+
+Forbidden functions : graphlib.TopologicalSorter
+
+Prototype:
+
+    def task_order(n: int, prereqs: list[list[int]]) -> list[int]:
+
+Examples:
+
+    task_order(2, [[1, 0]])                          ->  [0, 1]
+    task_order(4, [[1, 0], [2, 0], [3, 1], [3, 2]])  ->  [0, 1, 2, 3]
+    task_order(2, [[0, 1], [1, 0]])                  ->  []
+    task_order(3, [])                                ->  [0, 1, 2]

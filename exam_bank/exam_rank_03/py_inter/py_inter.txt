@@ -2,9 +2,9 @@ Assignment name  : py_inter
 Expected files   : py_inter.py
 --------------------------------------------------------------------------------
 
-Write a function that returns a string with the characters that appear in both
-strings, without repetitions. Characters are added in the order they appear in
-the first string.
+Write a function that returns a string with the characters that appear
+in both strings, without repetitions. Characters are added in the order
+they appear in the first string.
 
 Prototype:
 
@@ -14,3 +14,6 @@ Examples:
 
     inter("hello", "world")  ->  "lo"
     inter("banana", "band")  ->  "ban"
+    inter("abcabc", "bc")    ->  "bc"
+    inter("abc", "xyz")      ->  ""
+    inter("", "abc")         ->  ""
