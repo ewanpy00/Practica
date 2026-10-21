@@ -8,6 +8,7 @@ Shared by the CLI and the interactive shell. Exam content lives in
 
 import os
 import re
+import shutil
 
 from examshell import specs
 from examshell.grader import REPO_ROOT, rank_dir
@@ -15,6 +16,13 @@ from examshell.grader import REPO_ROOT, rank_dir
 RENDU = os.path.join(REPO_ROOT, "rendu")
 SUBJECTS_DIR = os.path.join(REPO_ROOT, "subjects")
 TRACES_DIR = os.path.join(REPO_ROOT, "traces")
+
+
+def reset_workspace():
+    """Wipe rendu/, subjects/ and traces/ so a new exam starts from scratch."""
+    for folder in (RENDU, SUBJECTS_DIR, TRACES_DIR):
+        shutil.rmtree(folder, ignore_errors=True)
+        os.makedirs(folder, exist_ok=True)
 
 
 def exercises_for(rank):

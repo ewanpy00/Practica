@@ -469,4 +469,5 @@ class ExamShell:
         except (AttributeError, ValueError):
             pass
         self.ask_param()
+        content.reset_workspace()
         self.start_new_ex()
